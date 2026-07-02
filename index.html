@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assignment Cover Page Generator — Sonargaon University</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <img src="img/sulogo.png" alt="Sonargaon University logo" class="topbar-logo">
+    <div class="topbar-text">
+      <h1>Cover Page Generator</h1>
+      <p>By Md. Shourov Mia (CSE2502035225)</p>
+    </div>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- ============ FORM PANEL ============ -->
+  <section class="panel form-panel" aria-label="Cover page details form">
+    <form id="cover-form">
+
+      <div class="field">
+        <label for="docTitle">Document Type</label>
+        <select id="docTitle">
+          <option value="Assignment">Assignment</option>
+          <option value="Lab Report">Lab Report</option>
+          <option value="Term Paper">Term Paper</option>
+          <option value="Project Report">Project Report</option>
+          <option value="Case Study">Case Study</option>
+        </select>
+      </div>
+
+      <div class="divider"><span>Submitted By</span></div>
+
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="e.g. Md. Shourov Mia" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label for="studentId">Student ID</label>
+        <input type="text" id="studentId" placeholder="e.g. CSE00000000000" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label for="courseTitle">Course Title</label>
+        <input type="text" id="courseTitle" placeholder="e.g. Physics II" autocomplete="off">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="courseCode">Course Code</label>
+          <input type="text" id="courseCode" placeholder="e.g. Phy 1301" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="section">Section</label>
+          <input type="text" id="section" placeholder="e.g. 13D" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="session">Session</label>
+        <div class="field-row session-row">
+          <select id="session">
+            <option value="Spring">Spring</option>
+            <option value="Summer" selected>Summer</option>
+            <option value="Fall">Fall</option>
+          </select>
+          <input type="text" id="sessionYear" readonly>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="experiment">Experiment Name</label>
+        <input type="text" id="experiment" placeholder="e.g. Determination of Refractive Index" autocomplete="off">
+      </div>
+
+      <div class="divider"><span>Submitted To</span></div>
+
+      <div class="field">
+        <label for="toName">Name</label>
+        <input type="text" id="toName" placeholder="e.g. MD. Mahfuzzaman" autocomplete="off">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="toDesignation">Designation:</label>
+          <input type="text" id="toDesignation" placeholder="e.g. Assignment Teacher" value="" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="toDepartment">Department</label>
+          <input type="text" id="toDepartment" placeholder="e.g. DBS" autocomplete="off">
+        </div>
+      </div>
+
+
+      <div class="divider"><span>Submission</span></div>
+
+      <div class="field">
+        <label for="subDate">Date of Submission</label>
+        <input type="date" id="subDate">
+      </div>
+
+      <button type="button" id="downloadBtn" class="download-btn">
+        <span id="btnLabel">Download PDF</span>
+      </button>
+      <p id="downloadCount" class="download-count"></p>
+
+    </form>
+  </section>
+
+  <!-- ============ PREVIEW PANEL ============ -->
+  <section class="panel preview-panel" aria-label="Cover page preview">
+    <div class="preview-scroll">
+      <div id="cover-page">
+        <div class="cp-university">SONARGAON UNIVERSITY</div>
+        <img src="img/sulogo.png" alt="University logo" class="cp-logo">
+        <div class="cp-doctitle" id="pv-docTitle">Assignment</div>
+        <div class="cp-experiment" id="pv-experiment-wrap">
+          <span class="cp-label cp-experiment-label">Experiment Name:</span> <span id="pv-experiment" class="cp-experiment-value">&nbsp;</span>
+        </div>
+
+        <table class="cp-table">
+          <thead>
+            <tr>
+              <th>Submitted by:</th>
+              <th>Submitted to:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p><span class="cp-label">Name:</span> <span id="pv-name">&nbsp;</span></p>
+                <p><span class="cp-label">Student ID:</span> <span id="pv-studentId">&nbsp;</span></p>
+              </td>
+              <td>
+                <p id="pv-toName">&nbsp;</p>
+                <p><span class="cp-label">Designation:</span> <span id="pv-toDesignation">&nbsp;</span></p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p><span class="cp-label">Course Title:</span> <span id="pv-courseTitle">&nbsp;</span></p>
+                <p><span class="cp-label">Course Code:</span> <span id="pv-courseCode">&nbsp;</span></p>
+                <p><span class="cp-label">Section:</span> <span id="pv-section">&nbsp;</span></p>
+                <p><span class="cp-label">Session:</span> <span id="pv-session">&nbsp;</span></p>
+              </td>
+              <td>
+                <p><span class="cp-label">Department:</span> <span id="pv-toDepartment">&nbsp;</span></p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="cp-date"><span class="cp-label">Date of Submission:-</span> <span id="pv-subDate">&nbsp;</span></div>
+
+        <div class="cp-signatures">
+          <div class="cp-sig">
+            <div class="cp-sig-line"></div>
+            <div class="cp-sig-caption">Signature of Student</div>
+          </div>
+          <div class="cp-sig">
+            <div class="cp-sig-line"></div>
+            <div class="cp-sig-caption">Signature of Teacher</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p>Fill the form on the left — the preview on the right updates live. Click <strong>Download PDF</strong> to save your cover page.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
